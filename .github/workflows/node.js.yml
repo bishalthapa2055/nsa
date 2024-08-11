@@ -102,7 +102,7 @@ jobs:
             cd /var/www &&
             echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env &&
             npm install --production &&
-            pm2 restart my-app || pm2 start server.js --name "my-app" &&
+            pm2 restart my-nsa || pm2 start server.js --name "my-nsa" &&
             pm2 save'
 
       - name: Clean up
