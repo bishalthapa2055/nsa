@@ -39,6 +39,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -56,10 +60,6 @@ jobs:
         run: tar -xzf artifacts.tar.gz -C artifacts
 
       - name: Setup SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -67,43 +67,30 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
       - name: Create target directory on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'sudo mkdir -p /var/www && sudo chown -R $SSH_USER:$SSH_USER /var/www'
 
       - name: Copy artifacts via SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: scp -r artifacts/* $SSH_USER@$SSH_HOST:/var/www
 
       - name: Install Node.js and PM2 on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
             curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs && sudo npm install -g pm2'
 
       - name: Deploy application on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          MONGO_URL: ${{secrets.MONGO_URI}}
-          ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
-          ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
         run: |
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
             cd /var/www &&
-            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env &&
+            echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env &&
+            echo "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" >> .env &&
+            echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env &&
             npm install --production &&
             pm2 restart my-app || pm2 start server.js --name "my-app" &&
             pm2 save'
 
-      - name: Clean up
+      - name: Clean up local artifacts and SSH key
         run: rm -rf ~/.ssh/id_rsa artifacts
+
+      - name: Clean up remote environment (optional)
+        run: |
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'rm -f /var/www/.env'
