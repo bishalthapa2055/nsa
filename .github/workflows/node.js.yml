@@ -3,7 +3,7 @@ name: Node.js CI/CD
 on:
   push:
     branches:
-      - master
+      - localdev
 
 jobs:
   build:
@@ -38,7 +38,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/localdev'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
