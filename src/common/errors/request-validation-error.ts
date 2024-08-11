@@ -26,7 +26,7 @@ export class RequestValidationError extends CustomError {
         return { message: err.msg, field: err.param };
       }
       // Handle other types if necessary
-      return { message: err.msg, field: err.path };
+      return { message: err.msg, field: err.type };
     });
   }
 }
