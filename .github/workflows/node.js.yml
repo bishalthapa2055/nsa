@@ -66,12 +66,20 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
-      - name: Create target directory on EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'sudo mkdir -p /var/www && sudo chown -R $SSH_USER:$SSH_USER /var/www'
+          - name: Create target directory on EC2
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            SSH_USER: ${{ secrets.SSH_USER }}
+            SSH_HOST: ${{ secrets.SSH_HOST }}
+          run: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
+              sudo mkdir -p /var/www && 
+              sudo chown -R $SSH_USER:$SSH_USER /var/www &&
+              sudo chmod -R 777 /var/www'
 
       - name: Copy artifacts via SSH
         env:
