@@ -29,6 +29,9 @@ jobs:
       - name: Archive production artifacts
         run: tar -czf artifacts.tar.gz -C dist .
 
+      - name: List build artifacts
+        run: ls -l artifacts.tar.gz
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -48,6 +51,17 @@ jobs:
         with:
           name: build-artifacts
           path: .
+
+      - name: List downloaded files
+        run: ls -l
+
+      - name: Extract build artifacts
+        run: |
+          mkdir -p artifacts
+          tar -xzf artifacts.tar.gz -C artifacts
+
+      - name: Check extracted files
+        run: ls -l artifacts
 
       - name: Setup SSH
         env:
