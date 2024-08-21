@@ -15,8 +15,7 @@ export interface Point {
 
 
 
-export interface UserAttrs {
-
+export interface UserAttrs { 
     first_name ?:string;
     last_name ?: string;
     phone_number ?:string;
