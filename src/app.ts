@@ -1,8 +1,9 @@
-import express from "express";
+import express, { application } from "express";
 import { json } from "body-parser";
 import cors from "cors";
 import { NotFoundError } from "./common/errors/not-found-error";
 import { errorHandler } from "./common/middlewares/error-handler";
+import { indexRouter } from "./routes/v1/index.routes";
 
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(json());
 app.all("/", (req , res) =>{
     res.status(200).json({status : true , message : "Server is Live"})
 })
+
+app.use("/api/v1",indexRouter);
 
 app.all("*" ,(req , res) =>{
    throw new NotFoundError()

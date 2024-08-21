@@ -21,7 +21,7 @@ const config = {
     // TEST_EMAIL : process.env.TEST_EMAIL,
 
     // secret key for jwt
-    TOKEN_KEY : process.env.JWT_TOKEN_KEY ,
+    access_token : process.env.JWT_TOKEN_KEY ,
 
     // for sms twiloo information 
     // phone_number : process.env.PHONE_NUMBER,

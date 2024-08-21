@@ -1,12 +1,4 @@
-import mongoose, { Schema } from "mongoose";
-
-
-export enum TypeGender {
-    male  = "male",
-    female = "female" ,
-    other = "other"
-}
-
+import mongoose from "mongoose";
 
 export interface Point {
     type: 'Point';
@@ -15,13 +7,12 @@ export interface Point {
 
 
 
-export interface UserAttrs {  
+export interface ArenaAttrs {  
     first_name ?:string;
     last_name ?: string;
     phone_number ?:string;
     email ?: string ;
     date_of_birth ?: number;
-    gender ?: TypeGender;
     photo_url ?: string;
     deleted ?:boolean;
     banned ?:boolean;
@@ -53,18 +44,17 @@ export interface UserAttrs {
 
 
 
-interface UserModel extends mongoose.Model<UserDoc>{
-    build(attrs : UserAttrs) :UserDoc ;
+interface ArenaModel extends mongoose.Model<ArenaDoc>{
+    build(attrs : ArenaAttrs) :ArenaDoc ;
 }
 
-export interface UserDoc extends mongoose.Document, UserAttrs {
+export interface ArenaDoc extends mongoose.Document, ArenaAttrs {
 
     first_name ?:string;
     last_name ?: string;
     phone_number ?:string;
     email ?: string ;
     date_of_birth ?: number;
-    gender ?: TypeGender;
     photo_url ?: string;
     deleted ?:boolean;
     banned ?:boolean;
@@ -98,7 +88,7 @@ export interface UserDoc extends mongoose.Document, UserAttrs {
     updatedAt: Date;
 }
 
-const userSchema = new mongoose.Schema<UserDoc>({
+const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     first_name :{
         type : String,
     },
@@ -119,10 +109,6 @@ const userSchema = new mongoose.Schema<UserDoc>({
     },
     searchTerm :{
         type : String,
-    },
-    gender :{
-        type :String,
-        enum : TypeGender
     },
     photo_url :{
         type : String,
@@ -237,23 +223,16 @@ const userSchema = new mongoose.Schema<UserDoc>({
 
 )
 
-userSchema.index({ "$**": "text"  , "lat_long": '2dsphere'});
-
-userSchema.pre("save" , async function (done){
-    if(this.first_name && this.last_name){
-        this.full_name = this.first_name + ' ' + this.last_name 
-        this.searchTerm = this.first_name+this.last_name
-    }
-    done()
-})
+ArenaSchema.index({ "$**": "text"  , "lat_long": '2dsphere'});
 
 
-userSchema.statics.build = (attrs: UserAttrs) => {
-  return new User(attrs);
+
+ArenaSchema.statics.build = (attrs: ArenaAttrs) => {
+  return new Arena(attrs);
 };
 
 
 
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
+const Arena = mongoose.model<ArenaDoc, ArenaModel>("Arena", ArenaSchema);
 
-export { User };
+export { Arena };

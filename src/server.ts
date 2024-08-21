@@ -8,7 +8,7 @@ import { Admin } from './model/admin';
 const start = async () => {
     console.log("Starting up........");
     const server = createServer(app);
-    const PORT = process.env.ENV_PORT || 5045;
+    const PORT = process.env.HOST_PORT || 5045;
 
     try {
         const mongodb = config.app.mongoUrl;
