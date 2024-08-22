@@ -35,7 +35,7 @@ const resetPasswordArenaController = async(req : Request , res : Response ) =>{
 
         res.status(200).json({
             status : true ,
-            message : "Password Reset sucessfull "
+            message : "Password Reset sucessfull. Proceed to login "
         })
     } catch (error) {
         res.status(400).json({
