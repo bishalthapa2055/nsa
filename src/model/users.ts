@@ -16,8 +16,7 @@ export interface Point {
 
 
 export interface UserAttrs {  
-    first_name ?:string;
-    last_name ?: string;
+    full_name ?: string;
     phone_number ?:string;
     email ?: string ;
     date_of_birth ?: number;
@@ -27,11 +26,10 @@ export interface UserAttrs {
     banned ?:boolean;
     under_review ?: boolean;
     onboarding_done ?: boolean ;
-    full_name ?: string;
     searchTerm ?: string;
     app_version ?: string;
     device_info ?:string;
-    lat_long ?: Point;
+    lng_lat ?: Point;
     address ?: string ;
     push_token ?: string ;
     deleted_at ?: Date;
@@ -59,8 +57,7 @@ interface UserModel extends mongoose.Model<UserDoc>{
 
 export interface UserDoc extends mongoose.Document, UserAttrs {
 
-    first_name ?:string;
-    last_name ?: string;
+    full_name ?: string;
     phone_number ?:string;
     email ?: string ;
     date_of_birth ?: number;
@@ -70,11 +67,10 @@ export interface UserDoc extends mongoose.Document, UserAttrs {
     banned ?:boolean;
     under_review ?: boolean;
     onboarding_done ?: boolean ;
-    full_name ?: string;
     searchTerm ?: string;
     app_version ?: string;
     device_info ?:string;
-    lat_long ?: Point;
+    lng_lat ?: Point;
     address ?: string ;
     push_token ?: string ;
     deleted_at ?: Date;
@@ -99,12 +95,6 @@ export interface UserDoc extends mongoose.Document, UserAttrs {
 }
 
 const userSchema = new mongoose.Schema<UserDoc>({
-    first_name :{
-        type : String,
-    },
-    last_name :{
-        type : String,
-    },
     email :{
         type : String,
     },
@@ -150,7 +140,7 @@ const userSchema = new mongoose.Schema<UserDoc>({
     device_info :{
         type  :String,
     },
-    lat_long :{
+    lng_lat :{
         // type : Object
         type: {
             type: String,
@@ -238,15 +228,7 @@ const userSchema = new mongoose.Schema<UserDoc>({
 )
 
 userSchema.index({ "$**": "text"  , "lat_long": '2dsphere'});
-
-userSchema.pre("save" , async function (done){
-    if(this.first_name && this.last_name){
-        this.full_name = this.first_name + ' ' + this.last_name 
-        this.searchTerm = this.first_name+this.last_name
-    }
-    done()
-})
-
+ 
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
