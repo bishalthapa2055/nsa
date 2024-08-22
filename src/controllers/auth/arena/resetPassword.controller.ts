@@ -6,7 +6,7 @@ import { Password } from "../../../common/service/password";
 const resetPasswordArenaController = async(req : Request , res : Response ) =>{
     try {
 
-        const { newPassword , confirmPassword } = req.body;
+        const { newPassword , confirmPassword  , phone_number} = req.body;
 
         const trimmedNewPassword = newPassword ? newPassword.trim() : "";
         const trimmedConfirmPassword = confirmPassword ? confirmPassword.trim() : "";
@@ -15,9 +15,9 @@ const resetPasswordArenaController = async(req : Request , res : Response ) =>{
             throw new BadRequestError("Password didnot match")
         }
 
-        const id = req.arenaData?.id;
-
-        const isExistArena = await Arena.findById(id);
+        const isExistArena = await Arena.findOne({
+            phone_number : phone_number 
+        });
 
         if(!isExistArena){
             throw new BadRequestError("Arean doesnot exists")

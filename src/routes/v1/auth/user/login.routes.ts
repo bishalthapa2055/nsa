@@ -1,12 +1,12 @@
 import express from "express";
-import { loginArenaControllerHandler } from "../../../../controllers/auth/arena/login.controller";
+import { loginUserControllerHandler } from "../../../../controllers/auth/user/login.controller";
 import { validateRequest } from "../../../../common/middlewares/validate-request";
 import { body } from "express-validator";
 
 const router = express.Router();
 
 router.post(
-    '/login',
+    "/login",
     [
         body("phone_number").not().isEmpty().withMessage("Phone Number field is required !!!")
         .custom((value) => {
@@ -29,8 +29,7 @@ router.post(
           .notEmpty().withMessage('pass_key is required')
     ],
     validateRequest,
-    loginArenaControllerHandler
+    loginUserControllerHandler
 );
 
-
-export { router as loginArenaRouter}
+export { router as loginUserRouter}
