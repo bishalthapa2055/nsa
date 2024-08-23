@@ -65,7 +65,7 @@ const sendOtpUserController = async(req :Request , res : Response ) =>{
             //send api service integration
             res.status(200).json({
                 status : true ,
-                message : "Otp created sucessfully",
+                message : "Otp created sucessfully, Otp valid for 10 mins.",
                 data : {
                     phone_number ,
                     otp
