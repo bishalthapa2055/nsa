@@ -37,7 +37,7 @@ const verifyEmailOtp = async ( req : Request , res : Response ) =>{
         }
         isExistUser.is_email_verified = true ;
         isExistUser.email_otp_code = '';
-        isExistUser.email_otp_expired_at = null;
+        isExistUser.email_otp_expired_at = 0;
         
         const verifyEmailOtp = await isExistUser.save();
         if(!verifyEmailOtp){
