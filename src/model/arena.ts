@@ -8,21 +8,24 @@ export interface Point {
 
 
 export interface ArenaAttrs {  
-    first_name ?:string;
-    last_name ?: string;
+    
+    arena_full_name ?: string;
     phone_number ?:string;
     email ?: string ;
-    date_of_birth ?: number;
+    registered_year ?: number;
     photo_url ?: string;
+    registration_number ?: string;
+    registration_photo ?: string;
+    secondary_number ?: string ;
+    telephone_number ?: string ;
     deleted ?:boolean;
     banned ?:boolean;
     under_review ?: boolean;
     onboarding_done ?: boolean ;
-    full_name ?: string;
     searchTerm ?: string;
     app_version ?: string;
     device_info ?:string;
-    lat_long ?: Point;
+    lng_lat ?: Point;
     address ?: string ;
     push_token ?: string ;
     deleted_at ?: Date;
@@ -34,12 +37,14 @@ export interface ArenaAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ;
-    otp_code ?: number ;
-    otp_expired_at ?: number;
+    email_otp_code ?: number ;
+    email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
     email_verification_encrypt ?: string;
     timeZone ?: string;
+    weekday_price ?: number ;
+    weekend_price ?: number ;
 }
 
 
@@ -50,21 +55,24 @@ interface ArenaModel extends mongoose.Model<ArenaDoc>{
 
 export interface ArenaDoc extends mongoose.Document, ArenaAttrs {
 
-    first_name ?:string;
-    last_name ?: string;
+    arena_full_name ?: string;
     phone_number ?:string;
     email ?: string ;
     date_of_birth ?: number;
     photo_url ?: string;
+    registered_year ?: number;
+    registration_number ?: string;
+    registration_photo ?: string;
+    secondary_number ?: string ;
+    telephone_number ?: string ;
     deleted ?:boolean;
     banned ?:boolean;
     under_review ?: boolean;
     onboarding_done ?: boolean ;
-    full_name ?: string;
     searchTerm ?: string;
     app_version ?: string;
     device_info ?:string;
-    lat_long ?: Point;
+    lng_lat ?: Point;
     address ?: string ;
     push_token ?: string ;
     deleted_at ?: Date;
@@ -76,25 +84,20 @@ export interface ArenaDoc extends mongoose.Document, ArenaAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ; 
-    otp_code ?: number ;
-    otp_expired_at ?: number;
+    email_otp_code ?: number ;
+    email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
     email_verification_encrypt ?: string;
     timeZone ?: string;
-
+    weekday_price ?: number ;
+    weekend_price ?: number ;
 
     createdAt: Date;
     updatedAt: Date;
 }
 
 const ArenaSchema = new mongoose.Schema<ArenaDoc>({
-    first_name :{
-        type : String,
-    },
-    last_name :{
-        type : String,
-    },
     email :{
         type : String,
     },
@@ -104,15 +107,30 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     phone_number :{
         type : String,
     },
-    full_name :{
+    secondary_number :{
         type : String,
+    },
+    telephone_number :{
+        type : String,
+    },
+    arena_full_name :{
+        type : String,
+    },
+    registration_number :{
+        type : String,
+    },
+    registration_photo :{
+        type : String,
+    },
+    registered_year :{
+        type : Number,
     },
     searchTerm :{
         type : String,
     },
     photo_url :{
         type : String,
-        default : "https://drivex-staging.s3.ap-southeast-2.amazonaws.com/profile/1716363025675.png"
+        default : "null"
     },
     under_review :{
         type : Boolean ,
@@ -136,7 +154,7 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     device_info :{
         type  :String,
     },
-    lat_long :{
+    lng_lat :{
         // type : Object
         type: {
             type: String,
@@ -185,10 +203,16 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     stream_token :{
         type : String
     },
-    otp_code :{
+    email_otp_code :{
         type : Number
     },
-    otp_expired_at :{
+    email_otp_expired_at :{
+        type : Number
+    },
+    weekday_price :{
+        type : Number
+    },
+    weekend_price :{
         type : Number
     },
     deactivated :{
@@ -205,9 +229,7 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     },
     timeZone :{
         type : String
-    }
-       
-
+    }    
 },
 {
     toJSON: {

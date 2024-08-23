@@ -10,14 +10,14 @@ export const requireAuthUser = async(
     next : NextFunction
 ) =>{
     if(!req.currentUser){
-        throw new NotAuthorizedError();
+        return next(new NotAuthorizedError());
 
     }
     const isExixtedUser = await User.findById(req.currentUser.id);
 
     // console.log(isExixtedInstructor)
     if(!isExixtedUser){
-        throw new NotAuthorizedError()
+        return next(new NotAuthorizedError());
     }
 
     req!.UserData = isExixtedUser;

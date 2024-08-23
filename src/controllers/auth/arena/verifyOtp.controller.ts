@@ -32,31 +32,13 @@ const verifyOtpArenaController = async( req : Request , res : Response ) =>{
             throw new BadRequestError("Invalid Otp")
         }
 
-        // create user 
-        const createArena = await Arena.build({phone_number}).save();
-        if(!createArena){
-            throw new BadRequestError("Unable to create Arena")
-        }
-
-         //if verified then remove  otp model and then create the users  
-         await Otp.findByIdAndDelete(isExistPhoneNumber.id);
-
-           //create access token for further processing
-        const userJwt = jwt.sign({
-            id:createArena.id,
-            phone_number: phone_number,
-                },
-                `${config.app.access_token}`,
-                {
-                expiresIn:"30days"
-            });
+        isExistPhoneNumber.verified = true ;
+        await isExistPhoneNumber.save();
 
         res.status(200).json({
             status : true ,
             message : "Otp verified ",
             data  :{
-                accessToken : userJwt,
-                arena_id : createArena.id,
                 phone_number : phone_number
             }
         })

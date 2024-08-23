@@ -9,14 +9,14 @@ export const requireAuthArena = async(
     next : NextFunction
 ) =>{
     if(!req.currentArena){
-        throw new NotAuthorizedError();
+        return next(new NotAuthorizedError());
 
     }
     const isExixtedArena = await Arena.findById(req.currentArena.id);
 
     // console.log(isExixtedInstructor)
     if(!isExixtedArena){
-        throw new NotAuthorizedError()
+        return next(new NotAuthorizedError());
     }
 
     req!.arenaData = isExixtedArena;
