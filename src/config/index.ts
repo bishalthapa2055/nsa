@@ -13,8 +13,8 @@ const config = {
     port: process.env.PORT || 5045,
 
     // for mail information 
-    // email : process.env.EMAIL,
-    // password : process.env.PASSWORD_MAIL,
+    email : process.env.EMAIL,
+    password : process.env.PASSWORD_MAIL,
 
     // for sending otp -email 
 

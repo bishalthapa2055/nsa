@@ -41,8 +41,8 @@ export interface UserAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ;
-    otp_code ?: number ;
-    otp_expired_at ?: number;
+    email_otp_code ?: string ;
+    email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
     email_verification_encrypt ?: string;
@@ -82,8 +82,8 @@ export interface UserDoc extends mongoose.Document, UserAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ; 
-    otp_code ?: number ;
-    otp_expired_at ?: number;
+    email_otp_code ?: string ;
+    email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
     email_verification_encrypt ?: string;
@@ -188,10 +188,10 @@ const userSchema = new mongoose.Schema<UserDoc>({
     stream_token :{
         type : String
     },
-    otp_code :{
-        type : Number
+    email_otp_code :{
+        type : String
     },
-    otp_expired_at :{
+    email_otp_expired_at :{
         type : Number
     },
     deactivated :{
