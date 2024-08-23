@@ -1,12 +1,12 @@
 import express from "express";
-import { loginArenaControllerHandler } from "../../../../controllers/auth/arena/login.controller";
 import { validateRequest } from "../../../../common/middlewares/validate-request";
+import { setUserPasswordHandler } from "../../../../controllers/auth/user/set-password.controller";
 import { body } from "express-validator";
 
 const router = express.Router();
 
 router.post(
-    '/login',
+    "/set-password",
     [
         body("phone_number").not().isEmpty().withMessage("Phone Number field is required !!!")
         .custom((value) => {
@@ -25,12 +25,12 @@ router.post(
             
             return true;
           }),
-          body("pass_key").trim()
-          .notEmpty().withMessage('pass_key is required')
+        body("pass_key")
+        .not().isEmpty().withMessage("pass_key is required")
+        .isLength({ min: 6 }).withMessage("pass_Key Length must be greater than 6 characters"),
     ],
     validateRequest,
-    loginArenaControllerHandler
-);
+    setUserPasswordHandler
+)
 
-
-export { router as loginArenaRouter}
+export { router as setUserPasswordRouter }

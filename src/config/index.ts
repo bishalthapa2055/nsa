@@ -10,7 +10,7 @@ const config = {
       "mongodb://localhost:27017/NSA",
     host: process.env.APP_HOST || "localhost",
 
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 5045,
 
     // for mail information 
     // email : process.env.EMAIL,

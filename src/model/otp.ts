@@ -6,6 +6,7 @@ export interface OtpAttrs {
     phone_number ?:string;
     otp_code ?: number ;
     expiry ?: number ;
+    verified ?: boolean ;
 
 }
 
@@ -20,6 +21,7 @@ export interface OtpDoc extends mongoose.Document, OtpAttrs {
     phone_number ?:string;
     otp_code ?: number ;
     expiry ?: number ;
+    verified ?: boolean ;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -35,6 +37,10 @@ const OtpSchema = new mongoose.Schema<OtpDoc>({
     expiry :{
       type : Number
     },
+    verified :{
+      type : Boolean ,
+      default : false
+    }
 },
 {
     toJSON: {

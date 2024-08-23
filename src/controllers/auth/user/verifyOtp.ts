@@ -36,33 +36,14 @@ const verifyUserOtpController = async(req : Request , res : Response ) =>{
             throw new BadRequestError("Invalid Otp")
         }
 
-        
+        isExistPhoneNumber.verified = true ;
 
-        // create user 
-        const createUser = await User.build({phone_number}).save();
-        if(!createUser){
-            throw new BadRequestError("Unable to create user")
-        }
-
-        //if verified then remove  otp model and then create the users  
-        await Otp.findByIdAndDelete(isExistPhoneNumber.id);
-
-        //create access token for further processing
-        const userJwt = jwt.sign({
-            id:createUser.id,
-            phone_number: phone_number,
-                },
-                `${config.app.access_token}`,
-                {
-                expiresIn:"30days"
-            });
+        const updateOtpStat =await isExistPhoneNumber.save();
 
         res.status(200).json({
             status : true ,
             message : "Otp verified ",
             data  :{
-                accessToken : userJwt,
-                user_id : createUser.id,
                 phone_number : phone_number
             }
         })
