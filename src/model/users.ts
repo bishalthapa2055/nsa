@@ -115,8 +115,7 @@ const userSchema = new mongoose.Schema<UserDoc>({
         enum : TypeGender
     },
     photo_url :{
-        type : String,
-        default : "https://drivex-staging.s3.ap-southeast-2.amazonaws.com/profile/1716363025675.png"
+        type : String
     },
     under_review :{
         type : Boolean ,

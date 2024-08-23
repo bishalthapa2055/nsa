@@ -7,12 +7,12 @@ import { Arena } from "../../model/arena";
 const updateUserDetails = async (req : Request , res : Response ) =>{
     try {
         const {
-            pass_key ,
             photo_url ,
             lng_lat ,
             full_name ,
             email ,
             address ,
+            timeZone,
             date_of_birth ,
             gender ,
             promotion_notification ,
@@ -25,11 +25,6 @@ const updateUserDetails = async (req : Request , res : Response ) =>{
         const isExistUser = await User.findById(id);
         if(!isExistUser){
             throw new BadRequestError("User doesnot exists")
-        }
-        let encpassword ;
-        if(pass_key){
-            encpassword = await Password.toHash(pass_key);
-            isExistUser.pass_key = encpassword || isExistUser.pass_key ;
         }
 
         if(email){
@@ -78,6 +73,7 @@ const updateUserDetails = async (req : Request , res : Response ) =>{
         isExistUser.lng_lat = lng_lat || isExistUser.lng_lat ;
         isExistUser.address = address || isExistUser.address ;
         isExistUser.gender = gender || isExistUser.gender ;
+        isExistUser.timeZone = timeZone || isExistUser.timeZone ;
 
 
         const updateUser = await isExistUser.save();
@@ -93,6 +89,8 @@ const updateUserDetails = async (req : Request , res : Response ) =>{
             updateUser.lng_lat &&
             updateUser.email &&
             updateUser.date_of_birth &&
+            updateUser.timeZone &&
+            updateUser.address &&
             updateUser.gender
         ){
             //send onboarding to true 
