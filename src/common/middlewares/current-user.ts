@@ -32,7 +32,7 @@ export const currentUser =async (
     ) => {
         try{
             if(!req.headers.authorization){
-                throw new NotAuthorizedError()
+                return next(new NotAuthorizedError());
             }
 
             const jwtToken = req.headers.authorization.split(" ")[1];
@@ -45,7 +45,7 @@ export const currentUser =async (
             req.currentUser = payload
 
         }catch(error){
-            throw new NotAuthorizedError()
+            return next(new NotAuthorizedError());
         }
 
         next()

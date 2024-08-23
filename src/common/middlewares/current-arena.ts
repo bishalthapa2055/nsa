@@ -44,7 +44,7 @@ export const currentArena =async (
             req.currentArena = payload
 
         }catch(error){
-            throw new NotAuthorizedError()
+            return next(new NotAuthorizedError());
         }
 
         next()

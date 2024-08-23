@@ -20,7 +20,8 @@ const createArenaProfileController = async ( req : Request , res : Response ) =>
             weekend_price ,
             promotion_notification ,
             booking_confirmation_sms_notification ,
-            booking_confirmation_email_notification
+            booking_confirmation_email_notification ,
+            timeZone
         } = req.body ;
 
 
@@ -85,6 +86,7 @@ const createArenaProfileController = async ( req : Request , res : Response ) =>
         isExistArena.telephone_number = telephone_number  || isExistArena.telephone_number
         isExistArena.weekday_price = weekday_price  || isExistArena.weekday_price
         isExistArena.weekend_price = weekend_price  || isExistArena.weekend_price
+        isExistArena.timeZone = timeZone  || isExistArena.timeZone
 
         const saveData = await isExistArena.save();
 
