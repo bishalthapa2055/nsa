@@ -3,9 +3,6 @@ import { BadRequestError } from "../../../common/errors/bad-request-error";
 import { Otp } from "../../../model/otp";
 import { expiryOtp } from "../../../common/otp/checkExp-otp";
 import { verrifyOtp } from "../../../common/otp/verify-otp";
-import { Arena } from "../../../model/arena";
-import config from "../../../config";
-import jwt from "jsonwebtoken";
 
 const verifyOtpArenaController = async( req : Request , res : Response ) =>{
     try {
