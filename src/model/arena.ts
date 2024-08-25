@@ -37,7 +37,7 @@ export interface ArenaAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ;
-    email_otp_code ?: number ;
+    email_otp_code ?: string ;
     email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
@@ -84,7 +84,7 @@ export interface ArenaDoc extends mongoose.Document, ArenaAttrs {
     promotion_notification ?: boolean ;
     booking_confirmation_sms_notification ?: boolean;
     booking_confirmation_email_notification ?: boolean ; 
-    email_otp_code ?: number ;
+    email_otp_code ?: string ;
     email_otp_expired_at ?: number;
     deactivated ?: boolean;
     pass_key ?: string ;
@@ -204,7 +204,7 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
         type : String
     },
     email_otp_code :{
-        type : Number
+        type : String
     },
     email_otp_expired_at :{
         type : Number

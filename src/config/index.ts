@@ -52,6 +52,13 @@ const config = {
     // node environment 
 
     node_env : process.env.NODE_ENV ,
+
+    //aws credentials 
+    aws_s3_access_key : process.env.AWS_S3_ACCESS_KEY,
+    aws_s3_secret_key : process.env.AWS_S3_ACCESS_KEY ,
+    aws_s3_bucket : process.env.AWS_S3_BUCKET ,
+    aws_s3_region : process.env. AWS_REGION,
+    
   },
 };
 
