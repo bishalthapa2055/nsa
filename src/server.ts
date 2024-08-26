@@ -4,6 +4,7 @@ import { app } from './app';
 import config from './config/index';
 import mongoose from 'mongoose';
 import { Admin } from './model/admin';
+import { seedArenaData } from './seeders/seedArena';
 
 const start = async () => {
     console.log("Starting up........");
@@ -31,7 +32,7 @@ const start = async () => {
     
     
         //seeding
-    
+        // await seedArenaData();
     } catch (e) {
         console.log("ERROR :", e);
     }
