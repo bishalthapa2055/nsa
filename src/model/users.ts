@@ -226,7 +226,7 @@ const userSchema = new mongoose.Schema<UserDoc>({
 
 )
 
-userSchema.index({ "$**": "text"  , "lat_long": '2dsphere'});
+userSchema.index({ "$**": "text"  , "lng_lat": '2dsphere'});
  
 
 userSchema.statics.build = (attrs: UserAttrs) => {
