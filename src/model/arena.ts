@@ -245,9 +245,8 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
 
 )
 
-ArenaSchema.index({ "$**": "text"  , "lat_long": '2dsphere'});
-
-
+ArenaSchema.index({ lng_lat: "2dsphere" });
+ArenaSchema.index({ "$**": "text" });  // Text index for search
 
 ArenaSchema.statics.build = (attrs: ArenaAttrs) => {
   return new Arena(attrs);
