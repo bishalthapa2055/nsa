@@ -22,8 +22,6 @@ const checkOnboardStats = async( req : Request  , res : Response ) =>{
                 step : 1
             })
         }else if(
-            !isExistArena.lng_lat?.coordinates[0] && 
-            !isExistArena.lng_lat?.coordinates[1] &&
             !isExistArena.address
         ){
             return res.status(200).json({
@@ -49,14 +47,23 @@ const checkOnboardStats = async( req : Request  , res : Response ) =>{
                 message : "Registration photo  to be added ",
                 step : 4
             })
-        } else if(
+        }else if(
+            !isExistArena.weekly_availability 
+        ){
+            return res.status(200).json({
+                status : true ,
+                message : "weekly_availability  to be added ",
+                step : 5
+            })
+        }  
+        else if(
             !isExistArena.weekend_price &&
             !isExistArena.weekday_price 
         ){
             return res.status(200).json({
                 status : true ,
                 message : "Price to be added ",
-                step : 5
+                step : 6
             })
         }else if(
             !isExistArena.promotion_notification &&
@@ -66,7 +73,7 @@ const checkOnboardStats = async( req : Request  , res : Response ) =>{
             return res.status(200).json({
                 status : true ,
                 message : "Notifications  Details to be added ",
-                step : 6
+                step : 7
             })
         }else {
             return res.status(200).json({
