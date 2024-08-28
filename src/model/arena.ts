@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface Point {
     type: 'Point';
@@ -45,6 +45,7 @@ export interface ArenaAttrs {
     timeZone ?: string;
     weekday_price ?: number ;
     weekend_price ?: number ;
+    weekly_availability ?: ObjectId ;
 }
 
 
@@ -92,6 +93,7 @@ export interface ArenaDoc extends mongoose.Document, ArenaAttrs {
     timeZone ?: string;
     weekday_price ?: number ;
     weekend_price ?: number ;
+    weekly_availability ?: ObjectId ;
 
     createdAt: Date;
     updatedAt: Date;
@@ -229,7 +231,12 @@ const ArenaSchema = new mongoose.Schema<ArenaDoc>({
     },
     timeZone :{
         type : String
-    }    
+    },
+    weekly_availability :{
+        type: mongoose.Schema.Types.ObjectId,
+        ref :"WeeklySchedule",
+        default : null
+    },
 },
 {
     toJSON: {

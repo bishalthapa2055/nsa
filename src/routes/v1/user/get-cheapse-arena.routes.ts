@@ -2,17 +2,16 @@ import express from "express";
 import { currentUser } from "../../../common/middlewares/current-user";
 import { requireAuthUser } from "../../../common/middlewares/require-auth-user";
 import { validateRequest } from "../../../common/middlewares/validate-request";
-import { getNearestArenaHandler } from "../../../controllers/users/get-lists-of-nearest-arenas.controller";
+import { getCheapestArenaControllerHandler } from "../../../controllers/users/get-cheapest-arena.controller";
 
 const router = express.Router();
 
-
-router.get(
-    '/arena/recommendation',
+router.post(
+    '/arena/get-cheapest',
     currentUser,
     requireAuthUser,
     validateRequest,
-    getNearestArenaHandler
+    getCheapestArenaControllerHandler
 );
 
-export { router as getNearestArenaRouter }
+export { router as getCheapestArenaRouter}

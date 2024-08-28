@@ -1,9 +1,10 @@
-import { Request , Response } from "express";
+import { Request , Response }  from "express";
 import { BadRequestError } from "../../common/errors/bad-request-error";
 import { Arena } from "../../model/arena";
 
-const getNearestArena = async( req : Request , res : Response ) =>{
+const getCheapestArenaController = async(req : Request  , res : Response ) =>{
     try {
+        const {currDate , type  } = req.body ;
         const  lng_lat  = req.UserData?.lng_lat;
         const  radius = 5 as number ;  //5 KM
 
@@ -22,7 +23,6 @@ const getNearestArena = async( req : Request , res : Response ) =>{
                 spherical : true
                 }
             },
-
             {
                 $match: {
                 //    deactivated: false,
@@ -41,19 +41,38 @@ const getNearestArena = async( req : Request , res : Response ) =>{
             throw new BadRequestError("No Futsal Arenas at a moment !!!")
         }
 
-        res.status(200).json({
-            status : true ,
-            total : data.length ,
-            data : data
-        })
+        if(type === 'weekday'){
+            // Transform the data to include weekday price and sort
+            const transformedData = data.map((item) => ({
+                ...item,
+                weekdayPrice: item.weekdayPrice || 0 // Ensure a default value for sorting
+            }));
 
+            // Sort by weekday price
+            const sortedData = transformedData.sort((a, b) => a.weekdayPrice - b.weekdayPrice);
+
+            res.status(200).json({
+                status: true,
+                total: sortedData.length,
+                data: sortedData
+            });
+        }else {
+            res.status(200).json({
+                status : true ,
+                total : data.length ,
+                data : data
+            })
+        }
+
+       
 
     } catch (error) {
         res.status(400).json({
             status : false ,
-            error : (error as any).message ? (error as any).message : "Debug Backend"
+            error : (error as any).message ? (error as any).message : "Internal Server Error "
         })
     }
 }
 
-export { getNearestArena as getNearestArenaHandler }
+
+export { getCheapestArenaController as getCheapestArenaControllerHandler }
