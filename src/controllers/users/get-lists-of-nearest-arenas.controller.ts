@@ -22,6 +22,7 @@ const getNearestArena = async( req : Request , res : Response ) =>{
                 spherical : true
                 }
             },
+
             {
                 $match: {
                 //    deactivated: false,

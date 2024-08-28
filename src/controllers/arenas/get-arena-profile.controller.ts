@@ -8,7 +8,6 @@ const getArenaProfile = async( req : Request , res : Response ) =>{
 
         const isExistArena = await Arena.findById(id).populate('weekly_availability','schedules');
 
-
         if(!isExistArena){
             throw new BadRequestError("Arena doesnot exists")
         }
@@ -37,6 +36,7 @@ const getArenaProfile = async( req : Request , res : Response ) =>{
                 weekday_price : isExistArena.weekday_price,
                 weekend_price : isExistArena.weekend_price,
                 weekly_availability : isExistArena.weekly_availability,
+
                 createdAt : isExistArena.createdAt,
                 updatedAt : isExistArena.updatedAt,
             }
